@@ -1,0 +1,32 @@
+{
+  "name": "maikhan-tolgoi-site",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@prisma/client": "6.19.3",
+    "@radix-ui/react-slot": "latest",
+    "class-variance-authority": "latest",
+    "clsx": "latest",
+    "lucide-react": "latest",
+    "next": "latest",
+    "react": "latest",
+    "react-dom": "latest",
+    "sharp": "latest",
+    "tailwind-merge": "latest"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "latest",
+    "@types/node": "latest",
+    "@types/react": "latest",
+    "@types/react-dom": "latest",
+    "prisma": "6.19.3",
+    "tailwindcss": "latest",
+    "typescript": "^5.9.2"
+  }
+}

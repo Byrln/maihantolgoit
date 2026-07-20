@@ -1,0 +1,138 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --ink: #55585c;
+  --muted: #8a8d91;
+  --dark: #2f3438;
+  --accent: #56d86b;
+  --accent-strong: #22b842;
+  --line: #d7a852;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--background);
+  color: var(--ink);
+  font-family: var(--font-body), Arial, sans-serif;
+  font-size: 13px;
+  letter-spacing: 0.04em;
+}
+
+::selection {
+  background: var(--gold);
+  color: var(--ink);
+}
+
+.site-container {
+  margin-inline: auto;
+  max-width: 1120px;
+  padding-inline: 24px;
+}
+
+.narrow-container {
+  margin-inline: auto;
+  max-width: 760px;
+  padding-inline: 24px;
+}
+
+.page-title {
+  color: #373b40;
+  font-size: 28px;
+  font-weight: 400;
+  letter-spacing: 0.22em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.section-title {
+  color: #50545a;
+  font-size: 17px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.body-copy {
+  color: #7f8388;
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0.055em;
+  line-height: 1.95;
+  text-align: center;
+}
+
+.thin-rule {
+  display: block;
+  width: 92px;
+  height: 1px;
+  background: var(--line);
+}
+
+.green-outline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--accent);
+  color: var(--accent-strong);
+  font-size: 11px;
+  letter-spacing: 0.28em;
+  padding: 8px 18px;
+  text-transform: lowercase;
+}
+
+.hero-strip {
+  position: relative;
+  height: 600px;
+  overflow: hidden;
+}
+
+.hero-strip.tall {
+  height: 360px;
+}
+
+.hero-strip img {
+  object-fit: cover;
+}
+
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgb(0 0 0 / 0.22);
+}
+
+.social-dot {
+  display: inline-flex;
+  height: 34px;
+  width: 34px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  color: white;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+@media (max-width: 760px) {
+  body {
+    letter-spacing: 0.02em;
+  }
+
+  .hero-strip,
+  .hero-strip.tall {
+    height: 230px;
+  }
+
+  .page-title {
+    font-size: 22px;
+  }
+}
