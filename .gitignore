@@ -6,6 +6,10 @@ node_modules/
 .next/
 out/
 
+# ENV
+.env
+.env*
+
 # Production
 build/
 dist/
