@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { mediaAccept } from "@/lib/media";
 
 export function MediaUploadDialog() {
   return (
@@ -23,7 +24,7 @@ export function MediaUploadDialog() {
       <DialogTrigger asChild>
         <Button>
           <ImagePlus />
-          Зураг нэмэх
+          Медиа нэмэх
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[460px]">
@@ -33,26 +34,26 @@ export function MediaUploadDialog() {
               <ImagePlus className="size-5" />
             </div>
             <div>
-              <DialogTitle>Шинэ зураг оруулах</DialogTitle>
-              <DialogDescription>Хуудас, блог, үйлчилгээний хэсэгт ашиглах зургаа нэмнэ.</DialogDescription>
+              <DialogTitle>Шинэ медиа оруулах</DialogTitle>
+              <DialogDescription>Хуудас, блог, үйлчилгээний хэсэгт ашиглах зураг эсвэл видеогоо нэмнэ.</DialogDescription>
             </div>
           </div>
         </DialogHeader>
 
         <form action={uploadMedia} className="grid gap-4">
           <div className="grid gap-2">
-            <Label htmlFor="media-file">Шинэ зураг</Label>
-            <Input id="media-file" name="file" accept="image/*" type="file" required />
+            <Label htmlFor="media-file">Шинэ файл</Label>
+            <Input id="media-file" name="file" accept={mediaAccept} type="file" required />
           </div>
           <div className="grid gap-2">
             <Label htmlFor="media-alt">Тайлбар</Label>
             <Input id="media-alt" name="alt" placeholder="Жишээ: Майхан толгой үйлчилгээ" />
-            <p className="text-xs leading-5 text-muted-foreground">Тайлбар нь зураг хайх, сонгох болон accessibility-д ашиглагдана.</p>
+            <p className="text-xs leading-5 text-muted-foreground">Тайлбар нь медиа хайх, сонгох болон accessibility-д ашиглагдана.</p>
           </div>
           <DialogFooter>
-            <SubmitButton pendingLabel="Зураг оруулж байна...">
+            <SubmitButton pendingLabel="Медиа оруулж байна...">
               <Upload />
-              Зураг оруулах
+              Медиа оруулах
             </SubmitButton>
           </DialogFooter>
         </form>

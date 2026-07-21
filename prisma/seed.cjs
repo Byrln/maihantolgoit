@@ -422,7 +422,7 @@ async function seedNavigation() {
       { label: "Amenities & Facilities", href: "/amenities-facilities", sortOrder: 4 },
       { label: "Services", href: "/services", sortOrder: 5 },
       { label: "Blog", href: "/blog", sortOrder: 6 },
-      { label: "Book now", href: "http://booking.maikhantolgoi.mn/room-rates?arrivalDate=&departureDate=", sortOrder: 7 },
+      { label: "Book now", href: "https://booking.maikhantolgoi.com/room-rates?arrivalDate=&departureDate=", sortOrder: 7 },
     ],
   });
 }

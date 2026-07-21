@@ -7,7 +7,7 @@ import { UserCreatedDialog } from "@/components/cms/user-created-dialog";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { getCurrentUser } from "@/lib/auth";
+import { requireAdminOrRedirect } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 
 type UsersPageProps = {
@@ -21,11 +21,8 @@ type UsersPageProps = {
 
 export default async function UsersPage({ searchParams }: UsersPageProps) {
   const params = await searchParams;
-  const currentUser = await getCurrentUser();
-  const isAdmin = currentUser.role === Role.ADMIN;
-  const users = isAdmin
-    ? await prisma.user.findMany({ orderBy: [{ role: "asc" }, { createdAt: "asc" }] })
-    : [currentUser];
+  const currentUser = await requireAdminOrRedirect();
+  const users = await prisma.user.findMany({ orderBy: [{ role: "asc" }, { createdAt: "asc" }] });
 
   return (
     <main className="flex flex-1 flex-col gap-6 p-6">
@@ -35,16 +32,14 @@ export default async function UsersPage({ searchParams }: UsersPageProps) {
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-semibold tracking-tight text-foreground">Хэрэглэгчид</h1>
-          <p className="text-sm text-muted-foreground">
-            {isAdmin ? "Админ хэрэглэгч бүртгэлүүдийг удирдана." : "Та зөвхөн өөрийн профайлыг харах боломжтой."}
-          </p>
+          <p className="text-sm text-muted-foreground">Админ хэрэглэгч бүртгэлүүдийг удирдана.</p>
         </div>
-        {isAdmin ? <AccountDialog canManage mode="create" /> : <AccountDialog canManage={false} mode="profile" user={currentUser} />}
+        <AccountDialog canManage mode="create" />
       </div>
 
       <Card>
         <CardHeader>
-          <CardTitle>{isAdmin ? "Бүх хэрэглэгч" : "Миний профайл"}</CardTitle>
+          <CardTitle>Бүх хэрэглэгч</CardTitle>
         </CardHeader>
         <CardContent>
           {users.length === 0 ? (
@@ -76,7 +71,7 @@ export default async function UsersPage({ searchParams }: UsersPageProps) {
                       </Badge>
                     </TableCell>
                     <TableCell className="text-right">
-                      <AccountDialog canManage={isAdmin} mode={isAdmin ? "edit" : "profile"} user={user} />
+                      <AccountDialog canManage={user.id !== currentUser.id} mode={user.id === currentUser.id ? "profile" : "edit"} user={user} />
                     </TableCell>
                   </TableRow>
                 ))}

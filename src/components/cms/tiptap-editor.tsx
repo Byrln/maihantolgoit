@@ -1,6 +1,7 @@
 "use client";
 
 import { forwardRef, useEffect, useRef, useState, type ReactNode } from "react";
+import { Node } from "@tiptap/core";
 import type { JSONContent } from "@tiptap/react";
 import { EditorContent, useEditor } from "@tiptap/react";
 import Heading from "@tiptap/extension-heading";
@@ -15,6 +16,7 @@ import {
   AlignLeft,
   AlignRight,
   Bold,
+  Code2,
   Heading1,
   Heading2,
   ImageIcon,
@@ -33,6 +35,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { emptyEditorContent } from "@/lib/cms";
+import { isVideoUrl, mediaAccept } from "@/lib/media";
 
 type TiptapEditorProps = {
   initialValue?: JSONContent | null;
@@ -50,6 +53,8 @@ export function TiptapEditor({ initialValue, name }: TiptapEditorProps) {
   const [linkOpen, setLinkOpen] = useState(false);
   const [linkValue, setLinkValue] = useState("");
   const [imageOpen, setImageOpen] = useState(false);
+  const [htmlOpen, setHtmlOpen] = useState(false);
+  const [htmlValue, setHtmlValue] = useState("<div>\n  \n</div>");
   const [media, setMedia] = useState<MediaItem[]>([]);
   const [mediaLoaded, setMediaLoaded] = useState(false);
   const [imageMessage, setImageMessage] = useState("");
@@ -78,6 +83,7 @@ export function TiptapEditor({ initialValue, name }: TiptapEditorProps) {
           class: "rounded-md border",
         },
       }),
+      HtmlBlock,
       TextAlign.configure({
         types: ["heading", "paragraph"],
       }),
@@ -141,6 +147,18 @@ export function TiptapEditor({ initialValue, name }: TiptapEditorProps) {
   const insertImage = (item: MediaItem) => {
     editor.chain().focus().setImage({ src: item.url, alt: item.alt }).run();
     setImageOpen(false);
+  };
+
+  const insertHtmlBlock = () => {
+    const html = htmlValue.trim();
+
+    if (!html) {
+      return;
+    }
+
+    editor.chain().focus().insertContent({ type: "htmlBlock", attrs: { html } }).run();
+    setHtmlOpen(false);
+    setHtmlValue("<div>\n  \n</div>");
   };
 
   const uploadImage = async () => {
@@ -250,7 +268,7 @@ export function TiptapEditor({ initialValue, name }: TiptapEditorProps) {
                   <p className="text-xs text-muted-foreground">Шинэ файл оруулах эсвэл өмнөх зургаас сонгоно.</p>
                 </div>
                 <div className="grid gap-2">
-                  <Input ref={fileInputRef} accept="image/*" type="file" />
+                  <Input ref={fileInputRef} accept={mediaAccept} type="file" />
                   <Button disabled={uploading} type="button" onClick={uploadImage}>
                     {uploading ? <Loader2 className="animate-spin" /> : <Upload />}
                     Зураг оруулах
@@ -266,8 +284,8 @@ export function TiptapEditor({ initialValue, name }: TiptapEditorProps) {
                   ) : media.length === 0 ? (
                     <div className="rounded-md border border-dashed bg-muted/30 px-4 py-5 text-center">
                       <ImageIcon className="mx-auto size-5 text-muted-foreground" />
-                      <p className="mt-2 text-xs font-medium text-foreground">Сонгох зураг алга</p>
-                      <p className="mt-1 text-xs leading-5 text-muted-foreground">Дээрээс зураг оруулаад агуулгадаа шууд ашиглана.</p>
+                      <p className="mt-2 text-xs font-medium text-foreground">Сонгох медиа алга</p>
+                      <p className="mt-1 text-xs leading-5 text-muted-foreground">Дээрээс зураг эсвэл видео оруулаад агуулгадаа шууд ашиглана.</p>
                     </div>
                   ) : (
                     <div className="grid max-h-56 grid-cols-3 gap-2 overflow-auto">
@@ -279,12 +297,46 @@ export function TiptapEditor({ initialValue, name }: TiptapEditorProps) {
                           type="button"
                           onClick={() => insertImage(item)}
                         >
-                          {/* eslint-disable-next-line @next/next/no-img-element */}
-                          <img src={item.url} alt={item.alt} className="aspect-square w-full object-cover" />
+                          {isVideoUrl(item.url) ? (
+                            <video src={item.url} className="aspect-square w-full object-cover" muted playsInline />
+                          ) : (
+                            // eslint-disable-next-line @next/next/no-img-element
+                            <img src={item.url} alt={item.alt} className="aspect-square w-full object-cover" />
+                          )}
                         </button>
                       ))}
                     </div>
                   )}
+                </div>
+              </div>
+            </PopoverContent>
+          </Popover>
+          <Popover open={htmlOpen} onOpenChange={setHtmlOpen}>
+            <PopoverTrigger asChild>
+              <ToolbarButton label="HTML блок">
+                <Code2 />
+              </ToolbarButton>
+            </PopoverTrigger>
+            <PopoverContent align="start" className="w-[420px]">
+              <div className="grid gap-3">
+                <div>
+                  <p className="text-sm font-medium text-foreground">HTML блок</p>
+                  <p className="text-xs leading-5 text-muted-foreground">Кодоо оруулаад хадгалахад нийтлэл дотор шууд render хийнэ.</p>
+                </div>
+                <textarea
+                  className="min-h-44 rounded-md border bg-background px-3 py-2 font-mono text-xs leading-6 outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                  value={htmlValue}
+                  onChange={(event) => setHtmlValue(event.target.value)}
+                  placeholder="<div>...</div>"
+                />
+                <div className="flex justify-end gap-2">
+                  <Button type="button" variant="outline" onClick={() => setHtmlOpen(false)}>
+                    Болих
+                  </Button>
+                  <Button type="button" onClick={insertHtmlBlock}>
+                    <Code2 />
+                    HTML нэмэх
+                  </Button>
                 </div>
               </div>
             </PopoverContent>
@@ -321,4 +373,35 @@ const ToolbarButton = forwardRef<HTMLButtonElement, ToolbarButtonProps>(function
       {children}
     </Button>
   );
+});
+
+const HtmlBlock = Node.create({
+  name: "htmlBlock",
+  group: "block",
+  atom: true,
+
+  addAttributes() {
+    return {
+      html: {
+        default: "",
+      },
+    };
+  },
+
+  parseHTML() {
+    return [{ tag: "div[data-html-block]" }];
+  },
+
+  renderHTML({ HTMLAttributes }) {
+    return ["div", { "data-html-block": "", class: "tiptap-html-block" }, HTMLAttributes.html || "HTML block"];
+  },
+
+  addNodeView() {
+    return ({ node }) => {
+      const wrapper = document.createElement("div");
+      wrapper.className = "tiptap-html-block";
+      wrapper.textContent = String(node.attrs.html || "HTML block");
+      return { dom: wrapper };
+    };
+  },
 });

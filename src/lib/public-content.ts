@@ -8,7 +8,7 @@ export const defaultNavLinks = [
   { label: "Amenities & Facilities", href: "/amenities-facilities" },
   { label: "Services", href: "/services" },
   { label: "Blog", href: "/blog" },
-  { label: "Book now", href: "http://booking.maikhantolgoi.mn/room-rates?arrivalDate=&departureDate=" },
+  { label: "Book now", href: "https://booking.maikhantolgoi.com/room-rates?arrivalDate=&departureDate=" },
 ];
 
 export async function getHeaderContent() {

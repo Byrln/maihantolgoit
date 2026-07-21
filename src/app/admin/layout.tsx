@@ -6,14 +6,14 @@ import { UserNav } from "@/components/cms/user-nav";
 import { Separator } from "@/components/ui/separator";
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { getCurrentUser } from "@/lib/auth";
+import { requireAdminOrRedirect } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
 
 export default async function AdminLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   await connection();
 
-  const user = await getCurrentUser();
+  const user = await requireAdminOrRedirect();
 
   return (
     <TooltipProvider>

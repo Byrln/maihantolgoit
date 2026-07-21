@@ -56,8 +56,8 @@ body {
 }
 
 ::selection {
-  background: var(--gold);
-  color: var(--ink);
+  background: #d7a852;
+  color: #1f2328;
 }
 
 .site-container {
@@ -455,6 +455,10 @@ body {
 .cms-rich-text ol { list-style: decimal; padding-left: 1.4rem; }
 .cms-rich-text blockquote { border-left: 3px solid #2c8a49; padding-left: 1.25rem; color: #6d766f; }
 .cms-rich-text a { color: #087b32; text-decoration: underline; text-underline-offset: 3px; }
+.cms-rich-text video { max-width: 100%; background: #111827; }
+.cms-html-block { margin-block: 1.5rem; }
+.cms-html-block > *:first-child { margin-top: 0; }
+.cms-html-block > *:last-child { margin-bottom: 0; }
 
 .cms-preview-canvas.is-mobile .cms-page-sections section.grid,
 .cms-preview-canvas.is-mobile .cms-page-sections [class*="grid-cols-"] {
@@ -600,6 +604,11 @@ body {
   letter-spacing: 0;
 }
 
+.cms-admin ::selection {
+  background: oklch(0.45 0.16 151);
+  color: oklch(0.99 0.005 145);
+}
+
 .cms-admin * {
   border-color: var(--border);
   letter-spacing: 0;
@@ -649,6 +658,20 @@ body {
   border-left: 3px solid var(--border);
   padding-left: 1rem;
   color: var(--muted-ui-foreground);
+}
+
+.cms-admin .tiptap-html-block {
+  margin: 1rem 0;
+  white-space: pre-wrap;
+  overflow-x: auto;
+  border: 1px dashed var(--border);
+  border-radius: 6px;
+  background: oklch(0.97 0.008 230);
+  padding: 0.85rem;
+  color: var(--muted-ui-foreground);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  font-size: 12px;
+  line-height: 1.65;
 }
 
 .cms-admin .ProseMirror-focused {

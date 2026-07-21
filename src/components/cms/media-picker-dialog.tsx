@@ -1,6 +1,6 @@
 "use client";
 
-import { Check, ImageIcon, Loader2, Upload } from "lucide-react";
+import { Check, ImageIcon, Loader2, Upload, Video } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 import { Button } from "@/components/ui/button";
@@ -13,6 +13,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import { isVideoUrl, mediaAccept } from "@/lib/media";
 
 type MediaItem = {
   id: string;
@@ -56,7 +57,7 @@ export function MediaPickerDialog({
   const upload = async () => {
     const file = fileRef.current?.files?.[0];
     if (!file) {
-      setMessage("Эхлээд зураг сонгоно уу.");
+      setMessage("Эхлээд медиа файл сонгоно уу.");
       return;
     }
 
@@ -94,15 +95,15 @@ export function MediaPickerDialog({
       </DialogTrigger>
       <DialogContent className="max-h-[86vh] overflow-hidden sm:max-w-3xl">
         <DialogHeader>
-          <DialogTitle>Зургийн сан</DialogTitle>
-          <DialogDescription>Бэлэн зураг сонгох эсвэл шинэ зураг оруулна.</DialogDescription>
+          <DialogTitle>Медиа сан</DialogTitle>
+          <DialogDescription>Бэлэн зураг/видео сонгох эсвэл шинэ файл оруулна.</DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 overflow-hidden">
           <div className="grid gap-2 rounded-md border bg-muted/30 p-3 sm:grid-cols-[1fr_auto]">
-            <Input ref={fileRef} accept="image/*" type="file" />
+            <Input ref={fileRef} accept={mediaAccept} type="file" />
             <Button disabled={uploading} type="button" onClick={upload}>
               {uploading ? <Loader2 className="animate-spin" /> : <Upload />}
-              {uploading ? "Оруулж байна..." : "Шинэ зураг оруулах"}
+              {uploading ? "Оруулж байна..." : "Шинэ медиа оруулах"}
             </Button>
           </div>
           {message ? <p className="text-sm text-destructive">{message}</p> : null}
@@ -113,7 +114,7 @@ export function MediaPickerDialog({
               </div>
             ) : media.length === 0 ? (
               <div className="grid min-h-48 place-items-center rounded-md border border-dashed px-6 text-center text-sm text-muted-foreground">
-                Зургийн сан хоосон байна. Дээрээс эхний зургаа оруулна уу.
+                Медиа сан хоосон байна. Дээрээс эхний зураг эсвэл видеогоо оруулна уу.
               </div>
             ) : (
               <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
@@ -124,8 +125,17 @@ export function MediaPickerDialog({
                     type="button"
                     onClick={() => choose(item)}
                   >
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={item.url} alt={item.alt} className="aspect-[4/3] w-full object-cover" />
+                    {isVideoUrl(item.url) ? (
+                      <span className="relative block">
+                        <video src={item.url} className="aspect-[4/3] w-full object-cover" muted playsInline />
+                        <span className="absolute left-2 top-2 grid size-7 place-items-center rounded-full bg-black/65 text-white">
+                          <Video className="size-4" />
+                        </span>
+                      </span>
+                    ) : (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img src={item.url} alt={item.alt} className="aspect-[4/3] w-full object-cover" />
+                    )}
                     <span className="block truncate px-2 py-2 text-xs text-foreground">{item.alt || "Тайлбаргүй зураг"}</span>
                     {currentUrl === item.url ? (
                       <span className="absolute right-2 top-2 grid size-7 place-items-center rounded-full bg-primary text-primary-foreground">

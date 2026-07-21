@@ -3,6 +3,7 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 
 import type { PageSection } from "@/lib/cms";
+import { isVideoUrl } from "@/lib/media";
 
 export function CmsPageSections({ sections }: { sections: PageSection[] }) {
   if (sections.length === 0) {
@@ -12,11 +13,29 @@ export function CmsPageSections({ sections }: { sections: PageSection[] }) {
   return (
     <div className="cms-page-sections">
       {sections.map((section) => {
+        if (section.type === "html") {
+          return (
+            <section key={section.id} className="narrow-container py-14 sm:py-20">
+              {section.title ? <h2 className="section-title text-left">{section.title}</h2> : null}
+              {section.html ? (
+                <div
+                  className="cms-rich-text mt-6"
+                  dangerouslySetInnerHTML={{ __html: section.html }}
+                />
+              ) : null}
+            </section>
+          );
+        }
+
         if (section.type === "feature") {
           return (
             <section key={section.id} className="cms-feature-section">
               {section.imageUrl ? (
-                <Image src={section.imageUrl} alt={section.imageAlt || section.title} fill sizes="100vw" className="object-cover" />
+                isVideoUrl(section.imageUrl) ? (
+                  <video src={section.imageUrl} className="absolute inset-0 h-full w-full object-cover" autoPlay muted loop playsInline />
+                ) : (
+                  <Image src={section.imageUrl} alt={section.imageAlt || section.title} fill sizes="100vw" className="object-cover" />
+                )
               ) : null}
               <div className="absolute inset-0 bg-black/40" />
               <div className="site-container relative flex min-h-[360px] flex-col justify-end py-14 text-white sm:min-h-[430px] sm:py-20">
@@ -39,13 +58,17 @@ export function CmsPageSections({ sections }: { sections: PageSection[] }) {
                   <article key={item.id} className="min-w-0">
                     {item.imageUrl ? (
                       <div className="relative aspect-[4/3] overflow-hidden bg-[#eef2ee]">
-                        <Image
-                          src={item.imageUrl}
-                          alt={item.imageAlt || item.title}
-                          fill
-                          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                          className="object-cover transition duration-500 hover:scale-[1.025]"
-                        />
+                        {isVideoUrl(item.imageUrl) ? (
+                          <video src={item.imageUrl} className="h-full w-full object-cover" controls muted playsInline />
+                        ) : (
+                          <Image
+                            src={item.imageUrl}
+                            alt={item.imageAlt || item.title}
+                            fill
+                            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                            className="object-cover transition duration-500 hover:scale-[1.025]"
+                          />
+                        )}
                       </div>
                     ) : null}
                     <h3 className="mt-5 break-words text-lg font-semibold leading-7 text-[#333a38]">{item.title}</h3>
@@ -65,13 +88,17 @@ export function CmsPageSections({ sections }: { sections: PageSection[] }) {
             <section key={section.id} className="site-container grid items-center gap-10 py-14 sm:py-20 lg:grid-cols-2 lg:gap-16">
               {section.imageUrl ? (
                 <div className={`relative aspect-[4/3] overflow-hidden bg-[#eef2ee] ${imageFirst ? "" : "lg:order-2"}`}>
-                  <Image
-                    src={section.imageUrl}
-                    alt={section.imageAlt || section.title}
-                    fill
-                    sizes="(max-width: 1024px) 100vw, 50vw"
-                    className="object-cover"
-                  />
+                  {isVideoUrl(section.imageUrl) ? (
+                    <video src={section.imageUrl} className="h-full w-full object-cover" controls muted playsInline />
+                  ) : (
+                    <Image
+                      src={section.imageUrl}
+                      alt={section.imageAlt || section.title}
+                      fill
+                      sizes="(max-width: 1024px) 100vw, 50vw"
+                      className="object-cover"
+                    />
+                  )}
                 </div>
               ) : null}
               <div className="min-w-0 lg:px-4">
@@ -146,9 +173,17 @@ function renderNode(node: RichNode, key: string): ReactNode {
   if (node.type === "image" && typeof node.attrs?.src === "string") {
     return (
       <span key={key} className="relative my-8 block aspect-[16/10] overflow-hidden">
-        <Image src={node.attrs.src} alt={String(node.attrs.alt || "Content image")} fill sizes="(max-width: 900px) 100vw, 760px" className="object-cover" />
+        {isVideoUrl(node.attrs.src) ? (
+          <video src={node.attrs.src} className="h-full w-full object-cover" controls playsInline />
+        ) : (
+          <Image src={node.attrs.src} alt={String(node.attrs.alt || "Content image")} fill sizes="(max-width: 900px) 100vw, 760px" className="object-cover" />
+        )}
       </span>
     );
+  }
+
+  if (node.type === "htmlBlock" && typeof node.attrs?.html === "string") {
+    return <div key={key} className="cms-html-block" dangerouslySetInnerHTML={{ __html: node.attrs.html }} />;
   }
 
   return children ? <div key={key}>{children}</div> : null;

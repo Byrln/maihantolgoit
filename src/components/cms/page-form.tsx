@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowDown, ArrowLeft, ArrowRight, ArrowUp, CopyPlus, Eye, ImageIcon, Laptop, Plus, Smartphone, Trash2 } from "lucide-react";
+import { ArrowDown, ArrowLeft, ArrowRight, ArrowUp, Code2, CopyPlus, Eye, ImageIcon, Laptop, Plus, Smartphone, Trash2 } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 
@@ -15,6 +15,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { emptyEditorContent, parsePageSections, type PageSection, type PageSectionItem } from "@/lib/cms";
+import { isVideoUrl, mediaAccept } from "@/lib/media";
 import { cn } from "@/lib/utils";
 
 type BuilderPage = {
@@ -37,6 +38,7 @@ const sectionLabels: Record<PageSection["type"], string> = {
   imageText: "Зураг + текст",
   gallery: "Картын жагсаалт",
   feature: "Том зурагтай хэсэг",
+  html: "HTML",
 };
 
 export function PageForm({ page }: PageFormProps) {
@@ -72,6 +74,7 @@ export function PageForm({ page }: PageFormProps) {
       type,
       title: sectionLabels[type],
       body: "",
+      html: type === "html" ? "<div>\n  \n</div>" : undefined,
       imagePosition: "left",
       items: type === "gallery" ? [] : undefined,
     };
@@ -159,7 +162,7 @@ export function PageForm({ page }: PageFormProps) {
               {
                 selectorId: "page-section-editor",
                 title: "Сонгосон хэсгийг засах",
-                body: "Зүүн жагсаалтаас хэсэг сонгоход доор нь тухайн хэсгийн гарчиг, тайлбар, зураг, картуудын засвар гарна.",
+                body: "Зүүн жагсаалтаас хэсэг сонгоход хажуугийн засварлах самбарт тухайн хэсгийн гарчиг, тайлбар, зураг, HTML болон картууд гарна.",
               },
               {
                 selectorId: "page-live-preview",
@@ -178,7 +181,7 @@ export function PageForm({ page }: PageFormProps) {
         <SubmitButton pendingLabel="Хадгалж байна...">Хуудсыг хадгалах</SubmitButton>
       </div>
 
-      <div className="grid min-w-0 gap-5 xl:grid-cols-[390px_minmax(0,1fr)]">
+      <div className="grid min-w-0 gap-5 xl:grid-cols-[320px_420px_minmax(0,1fr)]">
         <div className="grid min-w-0 content-start gap-4">
           <Card id="page-basic-info">
             <CardHeader>
@@ -205,8 +208,7 @@ export function PageForm({ page }: PageFormProps) {
                 <Label htmlFor="heroImage">Нүүр зураг</Label>
                 {heroPreview ? (
                   <div className="relative aspect-[16/8] overflow-hidden rounded-md border bg-muted">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={heroPreview} alt={hero.alt || title} className="h-full w-full object-cover" />
+                    <MediaPreview url={heroPreview} alt={hero.alt || title} />
                   </div>
                 ) : (
                   <div className="grid aspect-[16/8] place-items-center rounded-md border border-dashed bg-muted/30 text-muted-foreground"><ImageIcon /></div>
@@ -217,7 +219,7 @@ export function PageForm({ page }: PageFormProps) {
                     id="heroImage"
                     name="heroImage"
                     type="file"
-                    accept="image/*"
+                    accept={mediaAccept}
                     onChange={(event) => {
                       if (heroFileUrl) URL.revokeObjectURL(heroFileUrl);
                       const file = event.target.files?.[0];
@@ -255,14 +257,15 @@ export function PageForm({ page }: PageFormProps) {
               <div className="grid grid-cols-2 gap-2">
                 {(Object.keys(sectionLabels) as PageSection["type"][]).map((type) => (
                   <Button key={type} type="button" size="sm" variant="outline" onClick={() => addSection(type)}>
-                    <Plus />{sectionLabels[type]}
+                    {type === "html" ? <Code2 /> : <Plus />}{sectionLabels[type]}
                   </Button>
                 ))}
               </div>
             </CardContent>
           </Card>
+        </div>
 
-          <div id="page-section-editor">
+        <div id="page-section-editor" className="min-w-0 xl:sticky xl:top-[116px] xl:max-h-[calc(100vh-140px)] xl:overflow-y-auto xl:pr-1">
             {selected ? (
               <Card>
                 <CardHeader className="flex-row items-center justify-between gap-3">
@@ -283,12 +286,23 @@ export function PageForm({ page }: PageFormProps) {
                   <Label>Тайлбар</Label>
                   <Textarea value={selected.body || ""} rows={5} onChange={(event) => updateSection({ body: event.target.value })} />
                 </div>
+                {selected.type === "html" ? (
+                  <div className="grid gap-2">
+                    <Label>HTML код</Label>
+                    <Textarea
+                      className="min-h-[260px] font-mono text-xs leading-6"
+                      value={selected.html || ""}
+                      onChange={(event) => updateSection({ html: event.target.value })}
+                      placeholder="<div class=&quot;custom-block&quot;>...</div>"
+                    />
+                    <p className="text-xs leading-5 text-muted-foreground">Энэ HTML нь хадгалагдаад detail page дээр шууд харагдана.</p>
+                  </div>
+                ) : null}
                 {selected.type === "imageText" || selected.type === "feature" ? (
                   <>
                     {selected.imageUrl ? (
                       <div className="relative aspect-[16/8] overflow-hidden rounded-md border bg-muted">
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img src={selected.imageUrl} alt={selected.imageAlt || selected.title} className="h-full w-full object-cover" />
+                        <MediaPreview url={selected.imageUrl} alt={selected.imageAlt || selected.title} />
                       </div>
                     ) : null}
                     <MediaPickerDialog
@@ -316,8 +330,7 @@ export function PageForm({ page }: PageFormProps) {
                         <Textarea value={item.body || ""} rows={3} placeholder="Тайлбар" onChange={(event) => updateGalleryItem(item.id, { body: event.target.value })} />
                         {item.imageUrl ? (
                           <div className="relative aspect-[16/8] overflow-hidden rounded-md border bg-muted">
-                            {/* eslint-disable-next-line @next/next/no-img-element */}
-                            <img src={item.imageUrl} alt={item.imageAlt || item.title} className="h-full w-full object-cover" />
+                            <MediaPreview url={item.imageUrl} alt={item.imageAlt || item.title} />
                           </div>
                         ) : null}
                         <MediaPickerDialog currentUrl={item.imageUrl} onSelect={(media) => updateGalleryItem(item.id, { imageUrl: media.url, imageAlt: media.alt })} />
@@ -328,8 +341,13 @@ export function PageForm({ page }: PageFormProps) {
                 ) : null}
                 </CardContent>
               </Card>
-            ) : null}
-          </div>
+            ) : (
+              <Card className="border-dashed">
+                <CardContent className="grid min-h-48 place-items-center p-6 text-center text-sm leading-6 text-muted-foreground">
+                  Хэсэг сонгох эсвэл шинэ блок нэмээд эндээс дэлгэрэнгүй засна.
+                </CardContent>
+              </Card>
+            )}
         </div>
 
         <div id="page-live-preview" className="min-w-0 xl:sticky xl:top-[116px] xl:h-[calc(100vh-140px)]">
@@ -352,8 +370,7 @@ export function PageForm({ page }: PageFormProps) {
                 </div>
                 <section className="relative min-h-[300px] overflow-hidden bg-[#264a34] text-white">
                   {heroPreview ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img src={heroPreview} alt={hero.alt || title} className="absolute inset-0 h-full w-full object-cover" />
+                    <MediaPreview url={heroPreview} alt={hero.alt || title} className="absolute inset-0" />
                   ) : null}
                   <div className="absolute inset-0 bg-black/40" />
                   <div className="relative flex min-h-[300px] flex-col justify-center px-[8%] py-12">
@@ -369,5 +386,16 @@ export function PageForm({ page }: PageFormProps) {
         </div>
       </div>
     </form>
+  );
+}
+
+function MediaPreview({ url, alt, className }: { alt: string; className?: string; url: string }) {
+  if (isVideoUrl(url)) {
+    return <video src={url} className={cn("h-full w-full object-cover", className)} controls muted playsInline />;
+  }
+
+  return (
+    // eslint-disable-next-line @next/next/no-img-element
+    <img src={url} alt={alt} className={cn("h-full w-full object-cover", className)} />
   );
 }

@@ -1,6 +1,7 @@
-import type { Accommodation } from "@prisma/client";
+import type { Accommodation, Media } from "@prisma/client";
 
 import { saveAccommodation } from "@/app/admin/actions";
+import { CoverImageField } from "@/components/cms/cover-image-field";
 import { SubmitButton } from "@/components/cms/submit-button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -9,7 +10,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { stringList } from "@/lib/cms";
 
 type AccommodationFormProps = {
-  accommodation?: Accommodation | null;
+  accommodation?: (Accommodation & { image?: Media | null }) | null;
 };
 
 export function AccommodationForm({ accommodation }: AccommodationFormProps) {
@@ -40,10 +41,14 @@ export function AccommodationForm({ accommodation }: AccommodationFormProps) {
             <Textarea id="details" name="details" defaultValue={stringList(accommodation?.details).join("\n")} rows={8} />
             <p className="text-xs text-muted-foreground">Мөр бүр нэг мэдээлэл болно.</p>
           </div>
-          <div className="grid gap-2">
-            <Label htmlFor="image">Зураг</Label>
-            <Input id="image" name="image" type="file" accept="image/*" />
-          </div>
+          <CoverImageField
+            currentImage={accommodation?.image || null}
+            fileInputName="image"
+            label="Зураг"
+            mediaIdName="imageId"
+            removeName="removeImage"
+            title={accommodation?.title || "Байр"}
+          />
         </CardContent>
       </Card>
       <div className="flex justify-end">

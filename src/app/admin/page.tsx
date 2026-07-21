@@ -1,5 +1,5 @@
+import { ArrowUpRight, BedDouble, FileText, ImageIcon, Layers3, ListTree, PanelsTopLeft, Plus, Sparkles } from "lucide-react";
 import Link from "next/link";
-import { BedDouble, FileText, ImageIcon, Layers3, ListTree, PanelsTopLeft, Plus, Sparkles } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -18,30 +18,39 @@ export default async function AdminPage() {
   const hasNoContent = posts === 0 && services === 0 && media === 0 && pages === 0;
 
   return (
-    <main className="flex flex-1 flex-col gap-6 bg-[linear-gradient(180deg,_rgba(16,185,129,0.08),_transparent_280px)] p-6">
-      <div className="overflow-hidden rounded-lg border bg-card shadow-sm">
-        <div className="grid gap-6 bg-[radial-gradient(circle_at_top_left,_rgba(250,204,21,0.34),_transparent_34%),radial-gradient(circle_at_top_right,_rgba(56,189,248,0.24),_transparent_32%),linear-gradient(135deg,_#064e3b,_#0f172a)] p-6 text-white md:grid-cols-[1fr_auto] md:items-center">
+    <main className="flex flex-1 flex-col gap-6 bg-[#f6f8f7] p-4 sm:p-6">
+      <div className="overflow-hidden rounded-md border bg-card shadow-sm">
+        <div className="grid gap-6 border-b bg-white p-5 md:grid-cols-[1fr_auto] md:items-center">
           <div className="max-w-2xl">
-            <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-white/12 px-3 py-1 text-xs font-medium text-emerald-50">
+            <div className="mb-3 inline-flex items-center gap-2 rounded-md border bg-emerald-50 px-2.5 py-1 text-xs font-medium text-emerald-800">
               <Sparkles className="size-3.5" />
-              Майхан Толгой агуулгын төв
+              Maikhan Tolgoi
             </div>
-            <h1 className="text-3xl font-semibold tracking-tight">Хянах самбар</h1>
-            <p className="mt-2 text-sm leading-6 text-emerald-50/85">
-              Блог, үйлчилгээ, зураг болон хэрэглэгчийн бүртгэлээ нэг газраас удирдана.
+            <h1 className="text-2xl font-semibold tracking-tight text-foreground">Хянах самбар</h1>
+            <p className="mt-2 text-sm leading-6 text-muted-foreground">
+              Хуудас, байр, үйлчилгээ, блог болон медиа сангийн төлөвийг нэг дороос удирдана.
             </p>
           </div>
           <div className="flex flex-wrap gap-2">
-            <Button asChild className="bg-white text-slate-950 hover:bg-emerald-50">
+            <Button asChild>
+              <Link href="/admin/pages/new">
+                <Plus />
+                Хуудас нэмэх
+              </Link>
+            </Button>
+            <Button asChild variant="outline">
               <Link href="/admin/posts/new">
                 <Plus />
                 Блог нэмэх
               </Link>
             </Button>
-            <Button asChild className="border-white/30 bg-white/10 text-white hover:bg-white/20" variant="outline">
-              <Link href="/admin/services/new">Үйлчилгээ нэмэх</Link>
-            </Button>
           </div>
+        </div>
+        <div className="grid gap-px bg-border md:grid-cols-4">
+          <QuickLink href="/admin/media" label="Медиа upload" />
+          <QuickLink href="/admin/navigation" label="Цэс засах" />
+          <QuickLink href="/admin/accommodations" label="Байр удирдах" />
+          <QuickLink href="/" label="Сайт харах" external />
         </div>
       </div>
 
@@ -52,13 +61,13 @@ export default async function AdminPage() {
         </div>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-3 xl:grid-cols-6">
-        <StatCard accent="bg-violet-500/12 text-violet-700" icon={PanelsTopLeft} label="Хуудас" value={pages} href="/admin/pages" />
-        <StatCard accent="bg-lime-500/12 text-lime-700" icon={BedDouble} label="Байр" value={accommodations} href="/admin/accommodations" />
-        <StatCard accent="bg-sky-500/12 text-sky-700" icon={FileText} label="Блог" value={posts} href="/admin/posts" />
-        <StatCard accent="bg-emerald-500/12 text-emerald-700" icon={Layers3} label="Үйлчилгээ" value={services} href="/admin/services" />
-        <StatCard accent="bg-amber-500/14 text-amber-700" icon={ImageIcon} label="Зураг" value={media} href="/admin/media" />
-        <StatCard accent="bg-rose-500/12 text-rose-700" icon={ListTree} label="Цэс" value={navLinks} href="/admin/navigation" />
+      <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+        <StatCard icon={PanelsTopLeft} label="Хуудас" value={pages} href="/admin/pages" helper="Нүүр, about, service landing" />
+        <StatCard icon={BedDouble} label="Байр" value={accommodations} href="/admin/accommodations" helper="Ger, dome, cabin төрлүүд" />
+        <StatCard icon={FileText} label="Блог" value={posts} href="/admin/posts" helper="Мэдээ, аяллын тэмдэглэл" />
+        <StatCard icon={Layers3} label="Үйлчилгээ" value={services} href="/admin/services" helper="Camp service cards" />
+        <StatCard icon={ImageIcon} label="Медиа" value={media} href="/admin/media" helper="Зураг болон видео сан" />
+        <StatCard icon={ListTree} label="Цэс" value={navLinks} href="/admin/navigation" helper="Header navigation" />
       </div>
 
       {hasNoContent ? (
@@ -82,7 +91,7 @@ export default async function AdminPage() {
         </Card>
       ) : null}
 
-      <Card className="border-primary/10 bg-gradient-to-br from-white to-emerald-50/60">
+      <Card className="border-primary/10 bg-white">
         <CardHeader>
           <CardTitle>Редакторын ажиллагаа</CardTitle>
         </CardHeader>
@@ -97,28 +106,42 @@ export default async function AdminPage() {
   );
 }
 
+function QuickLink({ external, href, label }: { external?: boolean; href: string; label: string }) {
+  return (
+    <Link
+      href={href}
+      target={external ? "_blank" : undefined}
+      className="flex items-center justify-between bg-white px-4 py-3 text-sm font-medium text-foreground transition hover:bg-emerald-50"
+    >
+      {label}
+      <ArrowUpRight className="size-4 text-muted-foreground" />
+    </Link>
+  );
+}
+
 function StatCard({
   href,
   icon: Icon,
   label,
   value,
-  accent,
+  helper,
 }: {
-  accent: string;
   href: string;
+  helper: string;
   icon: React.ComponentType<{ className?: string }>;
   label: string;
   value: number;
 }) {
   return (
     <Link href={href}>
-      <Card className="transition hover:-translate-y-0.5 hover:shadow-md">
-        <CardContent className="flex items-center justify-between p-6">
+      <Card className="border-slate-200 bg-white transition hover:-translate-y-0.5 hover:border-emerald-300 hover:shadow-md">
+        <CardContent className="flex items-start justify-between gap-4 p-5">
           <div>
-            <p className="text-sm text-muted-foreground">{label}</p>
+            <p className="text-sm font-medium text-muted-foreground">{label}</p>
             <p className="mt-2 text-3xl font-semibold text-foreground">{value}</p>
+            <p className="mt-2 text-xs leading-5 text-muted-foreground">{helper}</p>
           </div>
-          <div className={`flex size-11 items-center justify-center rounded-lg ${accent}`}>
+          <div className="flex size-10 shrink-0 items-center justify-center rounded-md bg-emerald-50 text-emerald-700">
             <Icon className="size-5" />
           </div>
         </CardContent>

@@ -11,9 +11,10 @@ export type PageSectionItem = {
 
 export type PageSection = {
   id: string;
-  type: "text" | "imageText" | "gallery" | "feature";
+  type: "text" | "imageText" | "gallery" | "feature" | "html";
   title: string;
   body?: string;
+  html?: string;
   imageUrl?: string;
   imageAlt?: string;
   imagePosition?: "left" | "right";
@@ -58,7 +59,7 @@ export function parsePageSections(value: FormDataEntryValue | unknown): PageSect
       return (
         typeof candidate.id === "string" &&
         typeof candidate.title === "string" &&
-        ["text", "imageText", "gallery", "feature"].includes(String(candidate.type))
+        ["text", "imageText", "gallery", "feature", "html"].includes(String(candidate.type))
       );
     });
   } catch {

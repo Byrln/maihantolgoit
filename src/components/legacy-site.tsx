@@ -3,6 +3,7 @@ import Image from "next/image";
 import type { ReactNode } from "react";
 
 import { SiteHeader } from "@/components/site-header";
+import { isVideoUrl } from "@/lib/media";
 import { getHeaderContent } from "@/lib/public-content";
 import { contact, img } from "@/lib/site-data";
 
@@ -54,22 +55,22 @@ export function LegacyFooter() {
                      If you want to experience the beauty of Terkhiin Tsagaan Lake, choose us!
                    </p>
                    <div className="mt-6 flex gap-5">
-                     <a href="https://www.facebook.com" target="_blank" rel="noreferrer" className="social-dot flex items-center justify-center bg-[#4778c7] text-white" aria-label="Facebook">
+                     <a href="https://www.facebook.com/MaikhanTolgoi" target="_blank" rel="noreferrer" className="social-dot flex items-center justify-center bg-[#4778c7] text-white" aria-label="Facebook">
                        <svg viewBox="0 0 24 24" className="h-4 w-4 fill-current" aria-hidden="true">
                          <path d="M13.5 20v-7h2.4l.4-2.8h-2.8V3.8c0-.8.2-1.4 1.4-1.4h1.5V.1c-.3-.1-1.2-.1-2.2-.1-2.2 0-3.7 1.3-3.7 3.8v2.4H8.1V13h2.4v7h3Z" />
                        </svg>
                      </a>
-                     <a href="https://www.instagram.com" target="_blank" rel="noreferrer" className="social-dot flex items-center justify-center bg-[#d6d2c8] text-[#705333]" aria-label="Instagram">
+                     <a href="https://www.instagram.com/maikhantolgoi.lodge/" target="_blank" rel="noreferrer" className="social-dot flex items-center justify-center bg-[#d6d2c8] text-[#705333]" aria-label="Instagram">
                        <svg viewBox="0 0 24 24" className="h-4 w-4 fill-current" aria-hidden="true">
                          <path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5Zm0 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3H7Zm5 3.2A4.8 4.8 0 1 1 7.2 12 4.8 4.8 0 0 1 12 7.2Zm0 2A2.8 2.8 0 1 0 14.8 12 2.8 2.8 0 0 0 12 9.2Zm5.2-3.4a1.2 1.2 0 1 1-1.2 1.2 1.2 1.2 0 0 1 1.2-1.2Z" />
                        </svg>
                      </a>
-                     <a href="https://www.youtube.com" target="_blank" rel="noreferrer" className="social-dot flex items-center justify-center bg-[#e74b39] text-white" aria-label="YouTube">
+                     <a href="https://www.youtube.com/@Maikhantolgoi" target="_blank" rel="noreferrer" className="social-dot flex items-center justify-center bg-[#e74b39] text-white" aria-label="YouTube">
                        <svg viewBox="0 0 24 24" className="h-4 w-4 fill-current" aria-hidden="true">
                          <path d="M21.6 7.2a2.8 2.8 0 0 0-2-2C17.9 4.7 12 4.7 12 4.7s-5.9 0-7.6.5a2.8 2.8 0 0 0-2 2A29 29 0 0 0 2 12a29 29 0 0 0 .4 4.8 2.8 2.8 0 0 0 2 2c1.7.5 7.6.5 7.6.5s5.9 0 7.6-.5a2.8 2.8 0 0 0 2-2A29 29 0 0 0 22 12a29 29 0 0 0-.4-4.8ZM10 15.5v-7l6 3.5-6 3.5Z" />
                        </svg>
                      </a>
-                     <a href="mailto:info@maikhan-tolgoi.mn" className="social-dot flex items-center justify-center bg-[#2497c8] text-white" aria-label="Email">
+                     <a href="mailto:maikhantolgoicamp@gmail.com" className="social-dot flex items-center justify-center bg-[#2497c8] text-white" aria-label="Email">
                        <svg viewBox="0 0 24 24" className="h-4 w-4 fill-current" aria-hidden="true">
                          <path d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2Zm0 4.2-8 5.1-8-5.1V6l8 5.1L20 6v2.2Z" />
                        </svg>
@@ -105,7 +106,13 @@ export function PageHero({
 
   return (
     <section className={`hero-strip bg-[#244b35] ${tall ? "tall" : ""}`}>
-      {image ? <Image src={image} alt={title || "Maikhan Tolgoi landscape"} fill priority className="object-cover" /> : null}
+      {image ? (
+        isVideoUrl(image) ? (
+          <video src={image} className="absolute inset-0 h-full w-full object-cover" autoPlay muted loop playsInline />
+        ) : (
+          <Image src={image} alt={title || "Maikhan Tolgoi landscape"} fill priority className="object-cover" />
+        )
+      ) : null}
       {homeLogoHero ? null : <div className="hero-overlay" />}
       <div
         className={`absolute inset-0 flex flex-col px-5 text-white sm:px-8 ${

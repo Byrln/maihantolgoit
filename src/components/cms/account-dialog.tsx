@@ -2,7 +2,7 @@
 
 import type { Role, User } from "@prisma/client";
 import type { ComponentProps } from "react";
-import { MailIcon, ShieldIcon, UserIcon } from "lucide-react";
+import { KeyRoundIcon, MailIcon, ShieldIcon, UserIcon } from "lucide-react";
 
 import { deleteUser, saveProfile, saveUser } from "@/app/admin/actions";
 import { ConfirmDelete } from "@/components/cms/confirm-delete";
@@ -43,7 +43,7 @@ export function AccountDialog({ canManage, mode = "profile", triggerLabel, trigg
           {triggerLabel || (isCreate ? "Хэрэглэгч нэмэх" : canManage && mode === "edit" ? "Засах" : "Миний профайл")}
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[440px]">
+      <DialogContent className="max-h-[88vh] overflow-y-auto sm:max-w-[440px]">
         <DialogHeader>
           <div className="flex items-center gap-3">
             <Avatar className="size-12">
@@ -79,7 +79,7 @@ export function AccountDialog({ canManage, mode = "profile", triggerLabel, trigg
                   placeholder="Жишээ: bold"
                 />
               </div>
-              {isCreate ? <p className="text-xs text-muted-foreground">Нууц үг автоматаар үүсээд дараагийн цонхонд харагдана.</p> : null}
+              {isCreate ? <p className="text-xs text-muted-foreground">Нууц үг хоосон үлдээвэл автоматаар үүсээд дараагийн цонхонд харагдана.</p> : null}
             </div>
           ) : null}
 
@@ -114,6 +114,74 @@ export function AccountDialog({ canManage, mode = "profile", triggerLabel, trigg
                   <SelectItem value="USER">Хэрэглэгч</SelectItem>
                 </SelectContent>
               </Select>
+            </div>
+          ) : null}
+
+          {canManage && mode !== "profile" ? (
+            <div className="grid gap-3 rounded-md border bg-muted/20 p-3">
+              <div className="grid gap-1">
+                <Label htmlFor={`password-${user?.id || "new"}`}>{isCreate ? "Нууц үг" : "Шинэ нууц үг"}</Label>
+                <div className="relative">
+                  <KeyRoundIcon className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+                  <Input
+                    id={`password-${user?.id || "new"}`}
+                    className="pl-9"
+                    name="password"
+                    type="password"
+                    autoComplete="new-password"
+                    placeholder={isCreate ? "Хоосон бол автоматаар үүснэ" : "Солихгүй бол хоосон үлдээнэ"}
+                  />
+                </div>
+              </div>
+              <div className="grid gap-1">
+                <Label htmlFor={`password-confirm-${user?.id || "new"}`}>Нууц үг давтах</Label>
+                <Input
+                  id={`password-confirm-${user?.id || "new"}`}
+                  name="passwordConfirm"
+                  type="password"
+                  autoComplete="new-password"
+                  placeholder="Дээрх нууц үгийг давтана"
+                />
+              </div>
+            </div>
+          ) : null}
+
+          {!canManage || mode === "profile" ? (
+            <div className="grid gap-3 rounded-md border bg-muted/20 p-3">
+              <div className="grid gap-1">
+                <Label htmlFor={`current-password-${user?.id || "me"}`}>Одоогийн нууц үг</Label>
+                <div className="relative">
+                  <KeyRoundIcon className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+                  <Input
+                    id={`current-password-${user?.id || "me"}`}
+                    className="pl-9"
+                    name="currentPassword"
+                    type="password"
+                    autoComplete="current-password"
+                    placeholder="Нууц үг солих үед бөглөнө"
+                  />
+                </div>
+              </div>
+              <div className="grid gap-1">
+                <Label htmlFor={`profile-password-${user?.id || "me"}`}>Шинэ нууц үг</Label>
+                <Input
+                  id={`profile-password-${user?.id || "me"}`}
+                  name="password"
+                  type="password"
+                  autoComplete="new-password"
+                  placeholder="Солихгүй бол хоосон үлдээнэ"
+                />
+              </div>
+              <div className="grid gap-1">
+                <Label htmlFor={`profile-password-confirm-${user?.id || "me"}`}>Шинэ нууц үг давтах</Label>
+                <Input
+                  id={`profile-password-confirm-${user?.id || "me"}`}
+                  name="passwordConfirm"
+                  type="password"
+                  autoComplete="new-password"
+                  placeholder="Шинэ нууц үгийг давтана"
+                />
+              </div>
             </div>
           ) : null}
 

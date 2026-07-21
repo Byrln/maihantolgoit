@@ -9,6 +9,7 @@ export default async function EditAccommodationPage({ params }: { params: Promis
   const { id } = await params;
   const accommodation = await prisma.accommodation.findUnique({
     where: { id },
+    include: { image: true },
   });
 
   if (!accommodation) {

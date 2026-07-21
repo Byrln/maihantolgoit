@@ -34,7 +34,7 @@ export function UserNav({ user }: UserNavProps) {
           <span className="hidden text-sm font-medium sm:inline">{user.name || user.username || "Миний бүртгэл"}</span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-64">
+      <DropdownMenuContent align="end" className="w-64 border-none shadow-lg">
         <DropdownMenuLabel>
           <div className="grid gap-1">
             <span>{user.name || "Нэргүй хэрэглэгч"}</span>
@@ -61,9 +61,9 @@ function LogoutButton() {
   const { pending } = useFormStatus();
 
   return (
-    <button className="w-full" disabled={pending} type="submit">
+    <Button className="w-full bg-red-500 text-white hover:bg-red-600" disabled={pending} type="submit">
       {pending ? <Loader2 className="size-4 animate-spin" /> : <LogOut className="size-4" />}
       {pending ? "Гарч байна..." : "Гарах"}
-    </button>
+    </Button>
   );
 }

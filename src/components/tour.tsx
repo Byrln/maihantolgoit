@@ -339,7 +339,7 @@ export function TourProvider({
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="fixed inset-0 z-50 h-full w-full pointer-events-auto"
+              className="pointer-events-none fixed inset-0 z-50 h-full w-full"
             >
               <defs>
                 <mask id="tour-mask">
@@ -358,7 +358,7 @@ export function TourProvider({
               <rect
                 width="100%"
                 height="100%"
-                fill="rgba(0,0,0,0.5)"
+                fill="rgba(15,23,42,0.48)"
                 mask="url(#tour-mask)"
               />
             </motion.svg>
@@ -374,7 +374,7 @@ export function TourProvider({
                 height: spotlightHeight,
                 borderRadius: spotlightBorderRadius,
               }}
-              className={cn("z-[100] border-2 border-muted-foreground", className)}
+              className={cn("pointer-events-none z-[100] border-2 border-primary bg-transparent shadow-[0_0_0_9999px_rgba(15,23,42,0.02),0_0_0_4px_rgba(0,128,72,0.12)]", className)}
             />
 
             <motion.div
@@ -394,10 +394,10 @@ export function TourProvider({
               exit={{ opacity: 0, y: 10 }}
               style={{
                 position: "fixed",
-                maxWidth: 400,
-                minWidth: 300,
+                maxWidth: "calc(100vw - 32px)",
+                width: 360,
               }}
-              className="bg-background relative z-[100] rounded-lg border p-4 shadow-lg"
+              className="relative z-[101] rounded-md border bg-background p-4 shadow-xl"
             >
               <div className="absolute right-4 top-4 z-10 flex items-center gap-2">
                 <span className="text-muted-foreground text-xs">

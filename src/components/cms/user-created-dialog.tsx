@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { CheckCircle2, Copy } from "lucide-react";
+import { CheckCircle2, Copy, LinkIcon } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -24,11 +24,14 @@ export function UserCreatedDialog({ loginName, password, userName }: UserCreated
   const [loginUrl, setLoginUrl] = useState("/login");
 
   useEffect(() => {
-    setLoginUrl(`${window.location.origin}/login`);
-  }, []);
+    const url = new URL("/login", window.location.origin);
+    url.searchParams.set("username", loginName);
+    url.searchParams.set("password", password);
+    setLoginUrl(url.toString());
+  }, [loginName, password]);
 
   const copyDetails = async () => {
-    await navigator.clipboard.writeText(`Нэвтрэх хаяг: ${loginUrl}\nНэвтрэх нэр: ${loginName}\nНууц үг: ${password}`);
+    await navigator.clipboard.writeText(loginUrl);
   };
 
   return (
@@ -39,25 +42,21 @@ export function UserCreatedDialog({ loginName, password, userName }: UserCreated
             <CheckCircle2 className="size-6" />
           </div>
           <DialogTitle>Хэрэглэгч амжилттай үүслээ</DialogTitle>
-          <DialogDescription>{userName} хэрэглэгчид доорх мэдээллийг өгөөд нэвтрүүлнэ.</DialogDescription>
+          <DialogDescription>{userName} хэрэглэгчид энэ холбоосыг өгөөд нэвтрүүлнэ.</DialogDescription>
         </DialogHeader>
         <div className="grid gap-4">
           <div className="grid gap-2">
             <Label>Нэвтрэх холбоос</Label>
             <Input value={loginUrl} readOnly />
           </div>
-          <div className="grid gap-2">
-            <Label>Нэвтрэх нэр</Label>
-            <Input value={loginName} readOnly />
-          </div>
-          <div className="grid gap-2">
-            <Label>Түр нууц үг</Label>
-            <Input value={password} readOnly />
-          </div>
           <Button type="button" onClick={copyDetails}>
             <Copy />
-            Мэдээлэл хуулах
+            Холбоос хуулах
           </Button>
+          <a className="inline-flex items-center justify-center gap-2 rounded-md border px-3 py-2 text-sm font-medium transition hover:bg-muted" href={loginUrl} target="_blank">
+            <LinkIcon className="size-4" />
+            Нэвтрэх хуудсыг нээх
+          </a>
         </div>
       </DialogContent>
     </Dialog>

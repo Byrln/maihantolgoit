@@ -21,7 +21,7 @@ import {
 const contentItems = [
   { title: "Хяналтын самбар", url: "/admin", icon: LayoutDashboard },
   { title: "Хуудас", url: "/admin/pages", icon: FileText },
-  { title: "Байр", url: "/admin/accommodations", icon: BedDouble },
+  { title: "Өрөөний төрөл", url: "/admin/accommodations", icon: BedDouble },
   { title: "Блог", url: "/admin/posts", icon: Newspaper },
   { title: "Үйлчилгээ", url: "/admin/services", icon: TentTree },
   { title: "Зургийн сан", url: "/admin/media", icon: ImageIcon },
@@ -46,7 +46,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                   <TentTree className="size-5" />
                 </div>
                 <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-semibold">Майхан CMS</span>
+                  <span className="truncate font-semibold">Майхан Толгой</span>
                   <span className="truncate text-xs text-muted-foreground">Вэбсайт удирдлага</span>
                 </div>
               </Link>
