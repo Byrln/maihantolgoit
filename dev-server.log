@@ -1,0 +1,22 @@
+$ next dev
+▲ Next.js 16.2.10 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://192.168.1.231:3000
+- Environments: .env
+✓ Ready in 1265ms
+
+ GET /admin/services/new 200 in 4.3s (next.js: 799ms, application-code: 3.5s)
+[browser] [tiptap warn]: Duplicate extension names found: ['link', 'underline']. This can lead to issues.
+ GET /api/admin/media 200 in 454ms (next.js: 232ms, application-code: 222ms)
+ GET /api/admin/media 200 in 113ms (next.js: 5ms, application-code: 108ms)
+ GET /admin/services/new 200 in 647ms (next.js: 107ms, application-code: 540ms)
+✓ Compiled in 67.7s
+ GET /api/admin/media 200 in 624ms (next.js: 331ms, application-code: 293ms)
+ GET /admin/users 200 in 2.1s (next.js: 120ms, application-code: 1932ms)
+○ Compiling /login ...
+ GET /login 200 in 4.3s (next.js: 2.8s, application-code: 1507ms)
+ GET /admin/users 200 in 482ms (next.js: 43ms, application-code: 439ms)
+ GET /admin 200 in 4.9s (next.js: 3.4s, application-code: 1546ms)
+[browser] Cannot specify a "name" prop for a button that specifies a function as a formAction. React needs it to encode which action should be invoked. It will get overridden. 
+ GET /admin/posts 200 in 1163ms (next.js: 82ms, application-code: 1081ms)
+ GET /admin/services 200 in 862ms (next.js: 69ms, application-code: 793ms)

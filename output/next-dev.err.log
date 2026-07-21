@@ -1,0 +1,287 @@
+[browser] A tree hydrated but some attributes of the server rendered HTML didn't match the client properties. This won't be patched up. This can happen if a SSR-ed Client Component used:
+
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+https://react.dev/link/hydration-mismatch
+
+  ...
+    <HotReload globalError={[...]} webSocket={WebSocket} staticIndicatorState={{pathname:null, ...}}>
+      <AppDevOverlayErrorBoundary globalError={[...]}>
+        <ReplaySsrOnlyErrors>
+        <DevRootHTTPAccessFallbackBoundary>
+          <HTTPAccessFallbackBoundary notFound={<NotAllowedRootHTTPFallbackError>}>
+            <HTTPAccessFallbackErrorBoundary pathname="/accommoda..." notFound={<NotAllowedRootHTTPFallbackError>} ...>
+              <RedirectBoundary>
+                <RedirectErrorBoundary router={{...}}>
+                  <Head headCacheNode={{rsc:{...}, ...}}>
+                    <__next_viewport_boundary__>
+                    <MetadataWrapper>
+                      <div
+                        hidden={true}
+-                       bis_skin_checked="1"
+                      >
+                    ...
+                  <__next_root_layout_boundary__>
+                    <SegmentViewNode type="layout" pagePath="layout.tsx">
+                      <SegmentTrieNode>
+                      <link>
+                      <script>
+                      <script>
+                      <script>
+                      <RootLayout>
+                        <html lang="en">
+                          <body
+                            className="montserrat_92da908-module__jHNz4W__variable"
+-                           bis_register="W3sibWFzdGVyIjp0cnVlLCJleHRlbnNpb25JZCI6ImVwcGlvY2VtaG1ubGJoanBsY2drb2ZjaWll..."
+-                           __processed_5150bda4-f728-4b64-98fc-9008b48e2985__="true"
+                          >
+                            <NavigationProgress>
+                            ...
+                              <SegmentViewNode type="layout" pagePath="(frontend)...">
+                                <SegmentTrieNode>
+                                <RootLayout>
+                                  <div
+                                    className="montserrat_92da908-module__jHNz4W__variable"
+-                                   bis_skin_checked="1"
+                                  >
+                                    ...
+                                      <SegmentViewNode type="page" pagePath="(frontend)...">
+                                        <SegmentTrieNode>
+                                        <AccommodationPage>
+                                          <MainLayout>
+                                            <LegacyHeader>
+                                              <SiteHeader email="maikhantol..." links={[...]} logo="/assets/ex..." ...>
+                                                <header className="site-heade...">
+                                                  <div
+                                                    className="hidden border-b border-[#e7ece8] bg-[#f5f8f6] lg:block"
+-                                                   bis_skin_checked="1"
+                                                  >
+                                                    <div
+                                                      className="site-container flex h-8 items-center justify-between ..."
+-                                                     bis_skin_checked="1"
+                                                    >
+                                                      <p>
+                                                      <div
+                                                        className="flex items-center gap-5"
+-                                                       bis_skin_checked="1"
+                                                      >
+                                                  <div
+                                                    className="site-container flex h-[70px] items-center gap-5 lg:h-[7..."
+-                                                   bis_skin_checked="1"
+                                                  >
+                                                    <LinkComponent>
+                                                    <nav className="ml-auto hi..." aria-label="Primary na...">
+                                                      <DesktopNavItem>
+                                                      <DesktopNavItem>
+                                                      <DesktopNavItem>
+                                                      <DesktopNavItem>
+                                                      <DesktopNavItem item={{label:"Ser...", ...}} posts={[...]} ...>
+                                                        <div
+                                                          className="group relative"
+-                                                         bis_skin_checked="1"
+                                                        >
+                                                          <LinkComponent>
+                                                          <div
+                                                            className="invisible absolute left-1/2 top-full w-72 -tran..."
+-                                                           bis_skin_checked="1"
+                                                          >
+                                                            <div
+                                                              className="overflow-hidden rounded-md border border-[#dc..."
+-                                                             bis_skin_checked="1"
+                                                            >
+                                                      <DesktopNavItem item={{label:"Blog", ...}} posts={[...]} ...>
+                                                        <div
+                                                          className="group relative"
+-                                                         bis_skin_checked="1"
+                                                        >
+                                                          <LinkComponent>
+                                                          <div
+                                                            className="invisible absolute left-1/2 top-full w-72 -tran..."
+-                                                           bis_skin_checked="1"
+                                                          >
+                                                            <div
+                                                              className="overflow-hidden rounded-md border border-[#dc..."
+-                                                             bis_skin_checked="1"
+                                                            >
+                                                    <Button>
+                                                    <div
+                                                      className="ml-auto flex items-center gap-2 lg:hidden"
+-                                                     bis_skin_checked="1"
+                                                    >
+                                            <main>
+                                              <PageHero>
+                                                <section className={"hero-str..."}>
+                                                  <img>
+                                                  <ImagePreload>
+                                                  <div
+                                                    className="hero-overlay"
+-                                                   bis_skin_checked="1"
+                                                  >
+                                                  <div
+                                                    className="absolute inset-0 flex flex-col px-5 text-white sm:px-8 ..."
+-                                                   bis_skin_checked="1"
+                                                  >
+                                              <CmsPageSections>
+                                                <div
+                                                  className="cms-page-sections"
+-                                                 bis_skin_checked="1"
+                                                >
+                                              <section className="site-conta...">
+                                                <article className="grid items...">
+                                                  <div
+                                                    className={"relative aspect-[4/3] overflow-hidden "}
+-                                                   bis_skin_checked="1"
+                                                  >
+                                                  <div
+                                                    className="text-center"
+-                                                   bis_skin_checked="1"
+                                                  >
+                                                    <h2>
+                                                    <p>
+                                                    <div
+                                                      className="mt-6 text-sm leading-7 text-[#7b847f]"
+-                                                     bis_skin_checked="1"
+                                                    >
+                                                <article className="grid items...">
+                                                  <div
+                                                    className="relative aspect-[4/3] overflow-hidden md:order-2"
+-                                                   bis_skin_checked="1"
+                                                  >
+                                                  <div
+                                                    className="text-center"
+-                                                   bis_skin_checked="1"
+                                                  >
+                                                    <h2>
+                                                    <p>
+                                                    <div
+                                                      className="mt-6 text-sm leading-7 text-[#7b847f]"
+-                                                     bis_skin_checked="1"
+                                                    >
+                                                <article className="grid items...">
+                                                  <div
+                                                    className={"relative aspect-[4/3] overflow-hidden "}
+-                                                   bis_skin_checked="1"
+                                                  >
+                                                  <div
+                                                    className="text-center"
+-                                                   bis_skin_checked="1"
+                                                  >
+                                                    <h2>
+                                                    <p>
+                                                    <div
+                                                      className="mt-6 text-sm leading-7 text-[#7b847f]"
+-                                                     bis_skin_checked="1"
+                                                    >
+                                                <article className="grid items...">
+                                                  <div
+                                                    className="relative aspect-[4/3] overflow-hidden md:order-2"
+-                                                   bis_skin_checked="1"
+                                                  >
+                                                  <div
+                                                    className="text-center"
+-                                                   bis_skin_checked="1"
+                                                  >
+                                                    <h2>
+                                                    <p>
+                                                    <div
+                                                      className="mt-6 text-sm leading-7 text-[#7b847f]"
+-                                                     bis_skin_checked="1"
+                                                    >
+                                                <article className="grid items...">
+                                                  <div
+                                                    className={"relative aspect-[4/3] overflow-hidden "}
+-                                                   bis_skin_checked="1"
+                                                  >
+                                                  <div
+                                                    className="text-center"
+-                                                   bis_skin_checked="1"
+                                                  >
+                                                    <h2>
+                                                    <p>
+                                                    <div
+                                                      className="mt-6 text-sm leading-7 text-[#7b847f]"
+-                                                     bis_skin_checked="1"
+                                                    >
+                                            <LegacyFooter>
+                                              <footer>
+                                                <section className="relative h...">
+                                                  <img>
+                                                  <div
+                                                    className="absolute inset-0 bg-black/35"
+-                                                   bis_skin_checked="1"
+                                                  >
+                                                  <div
+                                                    className="absolute inset-0 flex flex-col items-center justify-cen..."
+-                                                   bis_skin_checked="1"
+                                                  >
+                                                    <h2>
+                                                    <p>
+                                                    <p>
+                                                    <div
+                                                      className="mt-6 flex gap-5"
+-                                                     bis_skin_checked="1"
+                                                    >
+                                                <div
+                                                  className="py-6 text-center text-[10px] text-[#a0a0a0]"
+-                                                 bis_skin_checked="1"
+                                                >
+                  ...
+ 
+[browser] A tree hydrated but some attributes of the server rendered HTML didn't match the client properties. This won't be patched up. This can happen if a SSR-ed Client Component used:
+
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+https://react.dev/link/hydration-mismatch
+
+  ...
+    <AppDevOverlayErrorBoundary globalError={[...]}>
+      <ReplaySsrOnlyErrors>
+      <DevRootHTTPAccessFallbackBoundary>
+        <HTTPAccessFallbackBoundary notFound={<NotAllowedRootHTTPFallbackError>}>
+          <HTTPAccessFallbackErrorBoundary pathname="/accommoda..." notFound={<NotAllowedRootHTTPFallbackError>} ...>
+            <RedirectBoundary>
+              <RedirectErrorBoundary router={{...}}>
+                <Head>
+                <__next_root_layout_boundary__>
+                  <SegmentViewNode type="layout" pagePath="layout.tsx">
+                    <SegmentTrieNode>
+                    <link>
+                    <script>
+                    <script>
+                    <script>
+                    <RootLayout>
+                      <html lang="en">
+                        <body className="montserrat...">
+                          <NavigationProgress>
+                            <Suspense fallback={null}>
+                              <NavigationProgressInner>
+                                <div
+                                  aria-hidden={true}
+                                  className={"navigation-progress "}
+-                                 bis_skin_checked="1"
+                                >
+                          ...
+                ...
+ 
+[browser] Detected `scroll-behavior: smooth` on the `<html>` element. To disable smooth scrolling during route transitions, add `data-scroll-behavior="smooth"` to your <html> element. Learn more: https://nextjs.org/docs/messages/missing-data-scroll-behavior
+[browser] Detected `scroll-behavior: smooth` on the `<html>` element. To disable smooth scrolling during route transitions, add `data-scroll-behavior="smooth"` to your <html> element. Learn more: https://nextjs.org/docs/messages/missing-data-scroll-behavior
+[browser] Detected `scroll-behavior: smooth` on the `<html>` element. To disable smooth scrolling during route transitions, add `data-scroll-behavior="smooth"` to your <html> element. Learn more: https://nextjs.org/docs/messages/missing-data-scroll-behavior
+[browser] Detected `scroll-behavior: smooth` on the `<html>` element. To disable smooth scrolling during route transitions, add `data-scroll-behavior="smooth"` to your <html> element. Learn more: https://nextjs.org/docs/messages/missing-data-scroll-behavior
+⨯ Error: Module [project]/src/components/ui/table.tsx [app-ssr] (ecmascript) was instantiated because it was required from module [project]/node_modules/.pnpm/next@16.2.10_react-dom@19.2_663cbbc388ccea4a0759266f342ff8e1/node_modules/next/dist/esm/build/templates/app-page.js?page=/admin/pages/page { MODULE_0 => "[project]/src/app/layout.tsx [app-rsc] (ecmascript, Next.js Server Component)", MODULE_1 => "[project]/node_modules/.pnpm/next@16.2.10_react-dom@19.2_663cbbc388ccea4a0759266f342ff8e1/node_modules/next/dist/client/components/builtin/not-found.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_2 => "[project]/node_modules/.pnpm/next@16.2.10_react-dom@19.2_663cbbc388ccea4a0759266f342ff8e1/node_modules/next/dist/client/components/builtin/forbidden.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_3 => "[project]/node_modules/.pnpm/next@16.2.10_react-dom@19.2_663cbbc388ccea4a0759266f342ff8e1/node_modules/next/dist/client/components/builtin/unauthorized.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_4 => "[project]/node_modules/.pnpm/next@16.2.10_react-dom@19.2_663cbbc388ccea4a0759266f342ff8e1/node_modules/next/dist/client/components/builtin/global-error.js [app-rsc] (ecmascript, Next.js Server Component)", MODULE_5 => "[project]/src/app/admin/layout.tsx [app-rsc] (ecmascript, Next.js Server Component)", MODULE_6 => "[project]/src/app/admin/pages/page.tsx [app-rsc] (ecmascript, Next.js Server Component)" } [app-rsc] (ecmascript) <locals>, but the module factory is not available.
+This is often caused by a stale browser cache, misconfigured Cache-Control headers, or a service worker serving outdated responses.
+To fix this, make sure your Cache-Control headers allow revalidation of chunks and review your service worker configuration. As an immediate workaround, try hard-reloading the page, clearing the browser cache, or unregistering any service workers.
+    at ignore-listed frames {
+  digest: '3120464085'
+}

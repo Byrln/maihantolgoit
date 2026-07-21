@@ -3,16 +3,24 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mysql"
   url      = env("DATABASE_URL")
 }
 
+enum Role {
+  ADMIN
+  USER
+}
+
 model User {
-  id        String   @id @default(cuid())
-  email     String   @unique
-  name      String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id           String   @id @default(cuid())
+  email        String   @unique
+  username     String?  @unique
+  passwordHash String?
+  name         String?
+  role         Role     @default(USER)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 }
 
 model Media {
@@ -35,18 +43,29 @@ model Page {
   title       String
   slug        String   @unique
   summary     String?
-  body        String?
+  body        Json?
+  sections    Json?
   heroImageId String?
   heroImage   Media?   @relation("PageHero", fields: [heroImageId], references: [id])
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
 
+model NavLink {
+  id        String   @id @default(cuid())
+  label     String
+  href      String
+  sortOrder Int      @default(0)
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
 model Accommodation {
   id        String   @id @default(cuid())
   title     String
   summary   String
-  details   String[]
+  details   Json
   imageId   String?
   image     Media?   @relation(fields: [imageId], references: [id])
   sortOrder Int      @default(0)
@@ -57,10 +76,13 @@ model Accommodation {
 model Service {
   id        String   @id @default(cuid())
   title     String
-  body      String
+  slug      String?  @unique
+  excerpt   String?
+  body      Json?
   imageId   String?
   image     Media?   @relation(fields: [imageId], references: [id])
   sortOrder Int      @default(0)
+  publishedAt DateTime?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -71,7 +93,7 @@ model Post {
   slug        String    @unique
   category    String?
   excerpt     String
-  body        String?
+  body        Json?
   coverImageId String?
   coverImage  Media?    @relation("PostCover", fields: [coverImageId], references: [id])
   publishedAt DateTime?
