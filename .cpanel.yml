@@ -4,7 +4,7 @@ deployment:
     - export APPPATH=/home/maikhant/maihantolgoi
     - export NODEENV=/home/maikhant/nodevenv/maihantolgoi/22/bin/activate
     - cd $APPPATH
-    - source $NODEENV && npm install
+    - source $NODEENV && npm install --include=dev
     - source $NODEENV && npm run prisma:push
     - source $NODEENV && npm run build
     - mkdir -p tmp

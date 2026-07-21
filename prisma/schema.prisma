@@ -32,9 +32,10 @@ model Media {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  pagesHero     Page[]  @relation("PageHero")
-  postsCover    Post[]  @relation("PostCover")
-  services      Service[]
+  pagesHero      Page[]          @relation("PageHero")
+  postsCover     Post[]          @relation("PostCover")
+  services       Service[]
+  accommodations Accommodation[]
 }
 
 model Page {
@@ -72,6 +73,18 @@ model Service {
   publishedAt DateTime?
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
+}
+
+model Accommodation {
+  id        String   @id @default(cuid())
+  title     String
+  summary   String   @db.Text
+  details   Json?
+  imageId   String?
+  image     Media?   @relation(fields: [imageId], references: [id])
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Post {
