@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Montserrat } from "next/font/google";
 
 import { NavigationProgress } from "@/components/navigation-progress";
+import { getSiteUrl } from "@/lib/site-url";
 import "./globals.css";
 
 const body = Montserrat({
@@ -12,7 +13,7 @@ const body = Montserrat({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://maikhantolgoi.mn"),
+  metadataBase: new URL(getSiteUrl()),
   title: "Maikhan Tolgoi Tourist Camp",
   description:
     "Eco-friendly tourist camp on the northern shore of Terkhiin Tsagaan Lake in Khorgo-Terkh National Park, Mongolia.",

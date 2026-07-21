@@ -7,11 +7,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum Role {
-  ADMIN
-  USER
-}
-
 model User {
   id           String   @id @default(cuid())
   email        String   @unique
@@ -24,18 +19,17 @@ model User {
 }
 
 model Media {
-  id        String   @id @default(cuid())
-  alt       String
-  url       String
-  width     Int?
-  height    Int?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
+  id             String          @id @default(cuid())
+  alt            String
+  url            String
+  width          Int?
+  height         Int?
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  accommodations Accommodation[]
   pagesHero      Page[]          @relation("PageHero")
   postsCover     Post[]          @relation("PostCover")
   services       Service[]
-  accommodations Accommodation[]
 }
 
 model Page {
@@ -46,9 +40,11 @@ model Page {
   body        Json?
   sections    Json?
   heroImageId String?
-  heroImage   Media?   @relation("PageHero", fields: [heroImageId], references: [id])
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+  heroImage   Media?   @relation("PageHero", fields: [heroImageId], references: [id])
+
+  @@index([heroImageId], map: "Page_heroImageId_fkey")
 }
 
 model NavLink {
@@ -68,11 +64,13 @@ model Service {
   excerpt     String?   @db.Text
   body        Json?
   imageId     String?
-  image       Media?    @relation(fields: [imageId], references: [id])
   sortOrder   Int       @default(0)
   publishedAt DateTime?
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
+  image       Media?    @relation(fields: [imageId], references: [id])
+
+  @@index([imageId], map: "Service_imageId_fkey")
 }
 
 model Accommodation {
@@ -81,10 +79,12 @@ model Accommodation {
   summary   String   @db.Text
   details   Json?
   imageId   String?
-  image     Media?   @relation(fields: [imageId], references: [id])
   sortOrder Int      @default(0)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  image     Media?   @relation(fields: [imageId], references: [id])
+
+  @@index([imageId], map: "Accommodation_imageId_fkey")
 }
 
 model Post {
@@ -95,8 +95,15 @@ model Post {
   excerpt      String    @db.Text
   body         Json?
   coverImageId String?
-  coverImage   Media?    @relation("PostCover", fields: [coverImageId], references: [id])
   publishedAt  DateTime?
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
+  coverImage   Media?    @relation("PostCover", fields: [coverImageId], references: [id])
+
+  @@index([coverImageId], map: "Post_coverImageId_fkey")
+}
+
+enum Role {
+  ADMIN
+  USER
 }

@@ -31,7 +31,14 @@ function NavigationProgressInner() {
         return;
       }
 
-      const next = new URL(link.href);
+      let next: URL;
+
+      try {
+        next = new URL(link.href, window.location.origin);
+      } catch {
+        return;
+      }
+
       if (`${next.pathname}${next.search}` === `${window.location.pathname}${window.location.search}`) return;
 
       setLoading(true);

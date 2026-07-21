@@ -1,3 +1,5 @@
+import { connection } from "next/server";
+
 import { AppSidebar } from "@/components/app-sidebar";
 import { AdminTopbarTitle } from "@/components/cms/admin-topbar-title";
 import { UserNav } from "@/components/cms/user-nav";
@@ -6,7 +8,11 @@ import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/s
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { getCurrentUser } from "@/lib/auth";
 
+export const dynamic = "force-dynamic";
+
 export default async function AdminLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+  await connection();
+
   const user = await getCurrentUser();
 
   return (
