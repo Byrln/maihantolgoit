@@ -126,7 +126,7 @@ function DesktopNavItem({ item, posts, services }: { item: HeaderLink; posts: He
           {dropdown.map((link) => (
             <Link key={link.href} href={link.href} className="block rounded px-3 py-2.5 text-sm leading-5 text-[#536058] hover:bg-[#eef5f0] hover:text-[#087b32]">{link.label}</Link>
           ))}
-          <Link href={item.href} className="mt-1 flex items-center gap-2 border-t border-[#e5ebe7] px-3 pt-3 text-xs font-semibold text-[#087b32]"><TentTree className="size-4" />Бүгдийг харах</Link>
+          <Link href={item.href} className="mt-1 flex items-center gap-2 border-t border-[#e5ebe7] px-3 pt-3 text-xs font-semibold text-[#087b32]"><TentTree className="size-4" />See All</Link>
         </div>
       </div>
     </div>
