@@ -32,10 +32,9 @@ model Media {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  pagesHero       Page[]          @relation("PageHero")
-  postsCover      Post[]          @relation("PostCover")
-  accommodation   Accommodation[]
-  services        Service[]
+  pagesHero     Page[]  @relation("PageHero")
+  postsCover    Post[]  @relation("PostCover")
+  services      Service[]
 }
 
 model Page {
@@ -61,42 +60,30 @@ model NavLink {
   updatedAt DateTime @updatedAt
 }
 
-model Accommodation {
-  id        String   @id @default(cuid())
-  title     String
-  summary   String
-  details   Json
-  imageId   String?
-  image     Media?   @relation(fields: [imageId], references: [id])
-  sortOrder Int      @default(0)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
 model Service {
-  id        String   @id @default(cuid())
-  title     String
-  slug      String?  @unique
-  excerpt   String?
-  body      Json?
-  imageId   String?
-  image     Media?   @relation(fields: [imageId], references: [id])
-  sortOrder Int      @default(0)
-  publishedAt DateTime?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model Post {
   id          String    @id @default(cuid())
   title       String
-  slug        String    @unique
-  category    String?
-  excerpt     String
+  slug        String?   @unique
+  excerpt     String?
   body        Json?
-  coverImageId String?
-  coverImage  Media?    @relation("PostCover", fields: [coverImageId], references: [id])
+  imageId     String?
+  image       Media?    @relation(fields: [imageId], references: [id])
+  sortOrder   Int       @default(0)
   publishedAt DateTime?
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
+}
+
+model Post {
+  id           String    @id @default(cuid())
+  title        String
+  slug         String    @unique
+  category     String?
+  excerpt      String
+  body         Json?
+  coverImageId String?
+  coverImage   Media?    @relation("PostCover", fields: [coverImageId], references: [id])
+  publishedAt  DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
 }
