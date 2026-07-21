@@ -14,6 +14,22 @@ type PostFormProps = {
   post?: (Post & { coverImage?: Media | null }) | null;
 };
 
+function dateInputValue(date?: Date | null) {
+  if (date) {
+    return date.toISOString().slice(0, 10);
+  }
+
+  const parts = new Intl.DateTimeFormat("en-CA", {
+    day: "2-digit",
+    month: "2-digit",
+    timeZone: "Asia/Ulaanbaatar",
+    year: "numeric",
+  }).formatToParts(new Date());
+  const value = Object.fromEntries(parts.map((part) => [part.type, part.value]));
+
+  return `${value.year}-${value.month}-${value.day}`;
+}
+
 export function PostForm({ post }: PostFormProps) {
   return (
     <form action={savePost} className="grid gap-6">
@@ -58,7 +74,7 @@ export function PostForm({ post }: PostFormProps) {
                 id="publishedAt"
                 name="publishedAt"
                 type="date"
-                defaultValue={post?.publishedAt ? post.publishedAt.toISOString().slice(0, 10) : ""}
+                defaultValue={dateInputValue(post?.publishedAt)}
               />
             </div>
           </div>
